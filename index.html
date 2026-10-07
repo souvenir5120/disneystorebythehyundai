@@ -262,7 +262,7 @@
 
   /* ▼▼▼ 인스타그램 설정 ▼▼▼
      [팔로우하고 선물 응모하기] 버튼이 여는 주소. 지금은 공식 계정, 이벤트 게시물이 올라가면 그 게시물 주소로 바꾸세요. */
-  var INSTA_URL = 'https://www.instagram.com/disneystorebythehyundai?stkn=eWIwdmJvcjRjeGNy/';
+  var INSTA_URL = 'https://www.instagram.com/disneystorebythehyundai/';
   /* ▲▲▲ 여기까지 ▲▲▲ */
 
   /* ===== 게임 설정 (원하면 바꿀 수 있는 부분) ===== */
@@ -618,7 +618,7 @@
   function shareLink() {
     var r = st.result || { score: 0, rank: 0 };
     var text = '⌨️ 나 디즈니 캐릭터 이름 ' + DURATION + '초에 ' + r.score + '개 쳤어!' + (r.rank ? ' 지금 ' + r.rank + '위 🏆' : '') + '\n너는 몇 개 칠 수 있어? 👀\n\n같이 게임하고 한복 입은 한국 한정판 미키 인형 받자 🎁✨';
-    if (navigator.share) {
+    if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       navigator.share({ title: '제1회 디즈니스토어 한글 받아치기 대회', text: text, url: GAME_URL }).catch(function () {});
       return;
     }
