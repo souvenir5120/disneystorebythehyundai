@@ -88,7 +88,7 @@
   .row input { flex: 1; min-width: 0; }
   .row .btn { width: auto; margin: 0; padding: 0 20px; }
   .hint { color: rgba(255,255,255,.75); font-size: 13px; text-align: center; }
-  .count { position: fixed; inset: 0; background: rgba(14, 10, 43, .93); color: var(--gold);
+  .count { position: fixed; inset: 0; background: var(--navy); color: var(--gold);   /* 남색 단색 배경 */
            font-size: 120px; font-weight: 700;
            display: none; align-items: flex-start; justify-content: center; padding-top: 18vh; z-index: 9;
            text-shadow: 0 0 30px rgba(255, 214, 107, .7); }
@@ -437,7 +437,8 @@
     $('score').textContent = '0'; $('time').textContent = DURATION.toFixed(1); $('barFill').style.width = '100%';
     $('word').textContent = ''; $('answer').value = '';
     show('game');
-    $('answer').focus();
+    try { $('answer').focus({ preventScroll: true }); } catch (e) { $('answer').focus(); }
+    window.scrollTo(0, 0);
     requestToken(st.gameNo, 3);
 
     var n = 3, c = $('count'), num = $('countNum');
