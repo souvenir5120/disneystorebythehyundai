@@ -617,7 +617,7 @@
 
   function shareLink() {
     var r = st.result || { score: 0, rank: 0 };
-    var text = '디즈니 캐릭터 이름 ' + DURATION + '초에 ' + r.score + '개 침' + (r.rank ? ' · 현재 ' + r.rank + '위' : '') + '. 너는 몇 개?';
+    var text = '⌨️ 나 디즈니 캐릭터 이름 ' + DURATION + '초에 ' + r.score + '개 쳤어!' + (r.rank ? ' 지금 ' + r.rank + '위 🏆' : '') + '\n너는 몇 개 칠 수 있어? 👀\n\n같이 게임하고 한복 입은 한국 한정판 미키 인형 받자 🎁✨';
     if (navigator.share) {
       navigator.share({ title: '제1회 디즈니스토어 한글 받아치기 대회', text: text, url: GAME_URL }).catch(function () {});
       return;
