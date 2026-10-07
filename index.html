@@ -1,87 +1,163 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" translate="no" class="notranslate">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>디즈니 타자 게임</title>
-<meta property="og:title" content="디즈니 타자 게임">
+<title>제1회 디즈니스토어배 한글 받아치기 대회</title>
+<meta property="og:title" content="제1회 디즈니스토어배 한글 받아치기 대회">
 <meta property="og:description" content="30초 동안 디즈니 캐릭터 이름을 몇 개나 칠 수 있을까요?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
+  /* ===== 색상 (여기 값만 바꾸면 전체 톤이 바뀝니다) ===== */
   :root {
-    --bg: #101a3a; --card: #ffffff; --ink: #1b2340; --sub: #6b7390;
-    --accent: #e4002b; --gold: #f5b800; --no: #e4002b; --line: #e6e8f0;
+    --navy: #17123f;        /* 디즈니스토어 키 컬러 */
+    --navy-light: #2b2277;
+    --navy-deep: #0e0a2b;
+    --card: #ffffff; --ink: #17123f; --sub: #6c6a8a; --line: #e7e6f2;
+    --gold: #ffd66b; --pink: #ff7fae; --no: #e4003a;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
-    background: var(--bg); color: var(--ink);
-    display: flex; justify-content: center; padding: 16px;
+    font-family: 'Gowun Dodum', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    color: var(--ink); min-height: 100vh; min-height: 100dvh;
+    background: radial-gradient(120% 70% at 50% 0%, var(--navy-light) 0%, var(--navy) 55%, var(--navy-deep) 100%) fixed;
+    display: flex; justify-content: center; padding: 20px 16px;
   }
-  .wrap { width: 100%; max-width: 420px; }
+  button, input { font-family: inherit; }
+/* 제목·단어·버튼·숫자는 동글동글한 '동글체', 작은 설명 글씨는 또렷한 '고운돋움' (둘 다 개인 디자이너의 무료 공개 서체) */
+  h1, .word, .big, .count, .btn, .eyebrow, .hud, .grade, .rank, .top3 h2, .top3 li b, .me b {
+    font-family: 'Dongle', 'Gowun Dodum', sans-serif; font-weight: 700; line-height: 1;
+  }
+  .wrap { width: 100%; max-width: 420px; position: relative; z-index: 1; }
   .screen { display: none; }
-  .screen.on { display: block; }
-  .card { background: var(--card); border-radius: 20px; padding: 22px 18px; margin-bottom: 14px; text-align: center; }
-  h1 { font-size: 26px; margin: 4px 0 6px; }
-  .lead { color: var(--sub); font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
+  .screen.on { display: block; animation: rise .35s ease-out; }
+  .card { background: var(--card); border-radius: 28px; padding: 24px 18px; margin-bottom: 14px; text-align: center;
+          box-shadow: 0 0 36px rgba(132, 120, 255, .28); }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--navy); background: var(--gold);
+             padding: 5px 12px; border-radius: 999px; letter-spacing: .5px; }
+  h1 { font-size: 34px; margin: 10px 0 8px; line-height: 1.2; }
+  .lead { color: var(--sub); font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
   input[type=text] {
     width: 100%; font-size: 18px; padding: 14px; border: 2px solid var(--line);
-    border-radius: 12px; text-align: center; outline: none; font-family: inherit;
+    border-radius: 16px; text-align: center; outline: none; color: var(--ink); background: #fff;
   }
-  input[type=text]:focus { border-color: var(--ink); }
+  input[type=text]:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(43, 34, 119, .12); }
   .btn {
-    width: 100%; font-size: 18px; font-weight: 700; padding: 15px; margin-top: 12px;
-    border: 0; border-radius: 12px; background: var(--accent); color: #fff; cursor: pointer;
+    position: relative; overflow: hidden;
+    width: 100%; font-size: 18px; font-weight: 700; padding: 16px; margin-top: 12px;
+    border: 0; border-radius: 16px; color: #fff; cursor: pointer;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
   }
+  .btn:active { transform: scale(.98); }
   .btn:disabled { opacity: .5; }
+  .btn.shine::after {      /* 버튼 위를 지나가는 빛 */
+    content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
+    animation: sweep 2.6s ease-in-out infinite;
+  }
   .link { background: none; border: 0; color: var(--sub); font-size: 13px; text-decoration: underline; margin-top: 12px; cursor: pointer; }
   .msg { color: var(--no); font-size: 13px; min-height: 18px; margin-top: 8px; }
   .me { font-size: 15px; margin-bottom: 4px; }
   .me b { font-size: 18px; }
   .code { font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: 2px; font-weight: 700; }
 
-  .top3 h2 { font-size: 15px; margin: 0 0 10px; color: var(--sub); }
+  .top3 h2 { font-size: 15px; margin: 0 0 10px; color: var(--navy); }
   .top3 ol { list-style: none; margin: 0; padding: 0; }
-  .top3 li { display: flex; justify-content: space-between; padding: 9px 4px; font-size: 16px; border-top: 1px solid var(--line); }
+  .top3 li { display: flex; justify-content: space-between; padding: 10px 6px; font-size: 16px; border-top: 1px solid var(--line); }
   .top3 li:first-child { border-top: 0; }
   .top3 .empty { color: var(--sub); font-size: 14px; justify-content: center; }
 
   /* 게임 화면 (키보드가 올라와도 보이도록 위쪽에 모아둠) */
   .hud { display: flex; justify-content: space-between; color: #fff; font-weight: 700; font-size: 18px; margin-bottom: 8px; }
-  .bar { height: 8px; background: rgba(255,255,255,.2); border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
-  .bar i { display: block; height: 100%; width: 100%; background: var(--gold); }
+  .bar { height: 10px; background: rgba(255,255,255,.18); border-radius: 5px; overflow: hidden; margin-bottom: 12px; }
+  .bar i { display: block; height: 100%; width: 100%; border-radius: 5px;
+           background: linear-gradient(90deg, var(--pink), var(--gold)); box-shadow: 0 0 10px rgba(255, 214, 107, .8); }
   .board { padding: 18px; transition: background .15s; }
-  .board.good { background: #d9f6e4; }
-  .board.bad { background: #ffe0e5; }
-  .word { font-size: 44px; font-weight: 800; min-height: 58px; line-height: 58px; margin-bottom: 12px; }
+  .board.good { background: #e3fbe9; }
+  .board.bad { background: #ffe3ea; animation: shake .25s; }
+  .word { font-size: 46px;
+          min-height: 58px; line-height: 58px; margin-bottom: 12px; white-space: nowrap; }
+  .word.long { font-size: 34px; }
+  .word.pop { animation: pop .22s ease-out; }
   .row { display: flex; gap: 8px; }
   .row input { flex: 1; min-width: 0; }
   .row .btn { width: auto; margin: 0; padding: 0 20px; }
-  .hint { color: rgba(255,255,255,.7); font-size: 13px; text-align: center; }
-  .count { position: fixed; inset: 0; background: rgba(16,26,58,.92); color: #fff; font-size: 110px; font-weight: 800;
-           display: none; align-items: flex-start; justify-content: center; padding-top: 18vh; z-index: 9; }
+  .hint { color: rgba(255,255,255,.75); font-size: 13px; text-align: center; }
+  .count { position: fixed; inset: 0; background: rgba(14, 10, 43, .93); color: var(--gold);
+           font-size: 120px; font-weight: 700;
+           display: none; align-items: flex-start; justify-content: center; padding-top: 18vh; z-index: 9;
+           text-shadow: 0 0 30px rgba(255, 214, 107, .7); }
   .count.on { display: flex; }
+  .count.tick { animation: pop .35s ease-out; }
 
   /* 결과 화면 */
-  .big { font-size: 24px; font-weight: 800; margin: 4px 0 8px; }
+  .big { font-size: 25px; font-weight: 700; margin: 4px 0 8px; }
   .acc { font-size: 17px; color: var(--sub); }
-  .grade { display: inline-block; margin: 12px 0; padding: 8px 14px; border-radius: 999px; background: #fff3c4; font-weight: 700; }
-  .rank { font-size: 28px; font-weight: 800; margin: 6px 0 2px; }
+  .grade { display: inline-block; margin: 12px 0; padding: 8px 16px; border-radius: 999px; background: var(--gold); color: var(--navy); font-weight: 700; }
+  .rank { font-size: 28px; font-weight: 700; margin: 6px 0 2px; }
   .ranksub { font-size: 13px; color: var(--sub); min-height: 16px; }
-  .codebox { margin: 14px 0 6px; padding: 12px; border: 2px dashed var(--line); border-radius: 12px; }
+  .codebox { margin: 14px 0 6px; padding: 12px; border: 2px dashed var(--line); border-radius: 16px; }
   .codebox .code { font-size: 26px; }
   .codebox small { display: block; color: var(--sub); margin-top: 4px; font-size: 12px; }
-  .prize { font-size: 14px; line-height: 1.5; margin-top: 10px; }
+  .prize { font-size: 14px; line-height: 1.6; margin-top: 10px; }
+
+  /* 동글체는 글자가 작게 그려져서 크기를 키워 맞춤 */
+  h1 { font-size: 60px; margin: 8px 0 4px; }
+  .eyebrow { font-size: 25px; padding: 6px 14px 3px; }
+  .btn { font-size: 36px; padding: 10px 16px 6px; }
+  .row .btn { padding: 4px 20px 0; }
+  .hud { font-size: 30px; }
+  .word { font-size: 76px; line-height: 62px; min-height: 62px; padding-top: 6px; }
+  .word.long { font-size: 56px; }
+  .big { font-size: 42px; }
+  .grade { font-size: 26px; padding: 8px 18px 4px; }
+  .rank { font-size: 46px; }
+  .top3 h2 { font-size: 28px; margin-bottom: 6px; }
+  .top3 li { align-items: center; }
+  .top3 li b { font-size: 28px; }
+  .me b { font-size: 30px; }
+  .count { font-size: 190px; }
+
+  /* ===== 반짝이 효과 ===== */
+  #sky, #fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  #sky { z-index: 0; }
+  #fx { z-index: 20; }
+  .star { position: absolute; color: #fff; opacity: .15; animation: twinkle 3s ease-in-out infinite; }
+  .star.gold { color: var(--gold); }
+  .spark { position: absolute; color: var(--gold); font-size: 18px; animation: fly .7s ease-out forwards; }
+  .spark.pink { color: var(--pink); }
+  .fall { position: absolute; top: -30px; color: var(--gold); animation: fall 2.6s linear forwards; }
+  .fall.pink { color: var(--pink); }
+  .fall.white { color: #fff; }
+
+  @keyframes twinkle { 0%, 100% { opacity: .12; transform: scale(.7); } 50% { opacity: .95; transform: scale(1.15); } }
+  @keyframes fly { 0% { transform: translate(-50%, -50%) scale(.3); opacity: 1; }
+                   100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2) rotate(140deg); opacity: 0; } }
+  @keyframes fall { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(300deg); opacity: .2; } }
+  @keyframes pop { 0% { transform: scale(.7); opacity: .3; } 70% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  @keyframes sweep { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+  @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .star, .btn.shine::after, .screen.on, .word.pop, .count.tick, .board.bad { animation: none; }
+    .star { opacity: .5; }
+  }
 </style>
 </head>
 <body>
+<div id="sky"></div>
 <div class="wrap">
 
   <!-- ① 첫 화면 -->
   <section id="home" class="screen on">
     <div class="card">
-      <h1>⌨️ 디즈니 타자 게임</h1>
-      <p class="lead">화면에 나오는 디즈니 캐릭터 이름을<br>30초 동안 최대한 많이 따라 쳐보세요!</p>
+      <div class="eyebrow">제1회 디즈니스토어배</div>
+      <h1>한글 받아치기 대회</h1>
+      <p class="lead">화면에 뜨는 캐릭터 이름을 그대로 받아치세요.<br>30초 동안 몇 개나 칠 수 있을까요?</p>
 
       <div id="newPlayer">
         <input type="text" id="nick" maxlength="10" placeholder="닉네임 (최대 10자)" autocomplete="off">
@@ -93,7 +169,7 @@
         <div class="me">참여코드 <span class="code" id="meCode"></span></div>
       </div>
 
-      <button class="btn" id="startBtn">게임 시작</button>
+      <button class="btn shine" id="startBtn">게임 시작</button>
       <div class="msg" id="homeMsg"></div>
       <button class="link" id="resetBtn" style="display:none">다른 닉네임으로 참여하기</button>
     </div>
@@ -132,7 +208,7 @@
       </div>
       <p class="prize">이벤트 종료 후 최종 1~3위에게<br>디즈니스토어의 선물을 드립니다 🎁</p>
       <button class="btn" id="saveRetryBtn" style="display:none;background:#1b2340">기록 다시 저장하기</button>
-      <button class="btn" id="againBtn">다시 도전하기</button>
+      <button class="btn shine" id="againBtn">다시 도전하기</button>
       <div class="msg" id="resMsg"></div>
     </div>
     <div class="card top3">
@@ -143,6 +219,7 @@
 </div>
 
 <div class="count" id="count">3</div>
+<div id="fx"></div>
 
 <script>
   /* ▼▼▼ 여기 한 곳만 고치면 됩니다 ▼▼▼
@@ -155,34 +232,22 @@
 
   // 따라 칠 단어 목록. '이름', 형식으로 자유롭게 넣고 빼세요. (띄어쓰기는 채점에서 무시됩니다)
   var WORDS = [
-    '미키', '미니', '도날드', '데이지', '구피', '플루토', '칩', '데일', '휴이', '듀이', '루이', '스크루지', '클라라벨', '피트',
-    '푸', '티거', '피글렛', '이요르', '래빗', '캉가',
-    '스티치', '릴로', '나니', '점바', '플리클리', '엔젤',
-    '우디', '버즈', '제시', '렉스', '햄', '포키', '랏소', '슬링키', '불스아이', '보핍', '앤디', '보니', '듀크카붐', '버니', '더키', '개비개비',
-    '엘사', '안나', '올라프', '크리스토프', '스벤', '한스', '브루니',
-    '심바', '날라', '티몬', '품바', '무파사', '스카', '라피키', '자주',
-    '니모', '도리', '말린', '크러쉬', '행크', '길',
-    '알라딘', '자스민', '지니', '아부', '자파', '이아고',
-    '라푼젤', '플린', '파스칼', '막시무스',
-    '모아나', '마우이', '푸아', '헤이헤이',
-    '덤보', '밤비', '덤퍼', '플라워',
-    '베이맥스', '히로',
-    '설리', '마이크', '부', '랜달',
-    '에리얼', '세바스찬', '플라운더', '우르슬라', '에릭',
-    '벨', '야수', '가스통', '루미에', '콕스워스',
-    '신데렐라', '오로라', '백설공주', '뮬란', '무슈', '포카혼타스', '미코', '티아나', '메리다', '라야', '시수', '미라벨',
-    '피터팬', '팅커벨', '웬디', '후크',
-    '피노키오', '지미니', '제페토',
-    '앨리스', '체셔캣', '하트여왕',
-    '주디', '닉', '플래시',
-    '레미', '링귀니',
-    '대쉬', '바이올렛', '잭잭', '엘라스티걸', '에드나',
-    '맥퀸', '메이터', '샐리',
-    '기쁨', '슬픔', '버럭', '까칠', '소심', '빙봉', '라일리', '불안',
-    '미구엘', '헥터', '단테',
-    '칼', '러셀', '더그', '케빈',
-    '랄프', '바넬로피', '펠릭스',
-    '타잔', '제인', '헤라클레스', '메그', '하데스', '말레피센트', '크루엘라', '마리', '루카', '알베르토', '앰버', '웨이드', '메이'
+    // 미키와 친구들
+    '미키', '미니', '도날드', '데이지', '구피', '플루토', '칩', '데일',
+    // 곰돌이 푸 · 릴로 & 스티치
+    '푸', '티거', '피글렛', '이요르', '스티치', '릴로',
+    // 토이 스토리
+    '우디', '버즈', '제시', '렉스', '포키', '랏소',
+    // 겨울왕국 · 라이온 킹
+    '엘사', '안나', '올라프', '스벤', '크리스토프', '심바', '날라', '티몬', '품바',
+    // 디즈니 클래식 · 프린세스
+    '알라딘', '자스민', '지니', '라푼젤', '모아나', '마우이', '신데렐라', '백설공주', '에리얼', '벨', '뮬란', '오로라', '피터팬', '팅커벨', '덤보', '밤비', '피노키오', '앨리스',
+    // 픽사 · 주토피아
+    '니모', '도리', '설리', '마이크', '주디', '닉', '베이맥스', '미구엘', '레미', '맥퀸', '잭잭',
+    // 인사이드 아웃
+    '기쁨이', '슬픔이', '버럭이', '까칠이', '소심이', '불안이', '빙봉',
+    // 마블
+    '아이언맨', '스파이더맨', '토르', '헐크', '로키', '그루트', '로켓', '타노스', '블랙팬서', '닥터스트레인지', '캡틴아메리카', '블랙위도우', '호크아이', '앤트맨', '데드풀', '완다', '비전', '스타로드', '가모라', '울버린'
   ];
 
   var GRADES = [       // 결과 등급 (점수 이상이면 해당 등급)
@@ -199,14 +264,17 @@
 
   /* ----- 서버(구글 시트) 통신 ----- */
   function callServer(action, args, ok, fail) {
+    var ctrl = window.AbortController ? new AbortController() : null;   // 20초 넘게 응답이 없으면 포기
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
     fetch(API_URL, {
+      signal: ctrl ? ctrl.signal : undefined,
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: action, args: args })
     })
       .then(function (r) { if (!r.ok) throw new Error('서버 응답 ' + r.status); return r.json(); })
-      .then(function (res) { if (res && res.__error) fail(new Error(res.__error)); else ok(res); })
-      .catch(function (err) { fail(err); });
+      .then(function (res) { clearTimeout(timer); if (res && res.__error) fail(new Error(res.__error)); else ok(res); })
+      .catch(function (err) { clearTimeout(timer); fail(err && err.name === 'AbortError' ? new Error('응답 시간 초과') : err); });
   }
   function server() {
     var ok = function () {}, fail = function () {};
@@ -219,6 +287,52 @@
     });
     return run;
   }
+
+  /* ----- 반짝이 효과 ----- */
+  var MARKS = ['✦', '✧', '✦', '⋆'];
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function makeSky() {                       // 배경에서 깜빡이는 별
+    var sky = $('sky');
+    for (var i = 0; i < 28; i++) {
+      var s = document.createElement('span');
+      s.className = 'star' + (i % 3 === 0 ? ' gold' : '');
+      s.textContent = MARKS[i % MARKS.length];
+      s.style.left = rnd(0, 100) + '%'; s.style.top = rnd(0, 100) + '%';
+      s.style.fontSize = rnd(8, 20) + 'px';
+      s.style.animationDuration = rnd(2, 5) + 's'; s.style.animationDelay = rnd(0, 4) + 's';
+      sky.appendChild(s);
+    }
+  }
+  function burst(el, n) {                    // 요소 주변으로 반짝이가 터짐
+    var r = el.getBoundingClientRect(), fx = $('fx');
+    for (var i = 0; i < n; i++) {
+      (function () {
+        var s = document.createElement('span'), ang = rnd(0, Math.PI * 2), dist = rnd(50, 120);
+        s.className = 'spark' + (i % 3 === 0 ? ' pink' : '');
+        s.textContent = MARKS[i % MARKS.length];
+        s.style.left = (r.left + r.width / 2) + 'px'; s.style.top = (r.top + r.height / 2) + 'px';
+        s.style.fontSize = rnd(14, 26) + 'px';
+        s.style.setProperty('--dx', Math.cos(ang) * dist + 'px'); s.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+        fx.appendChild(s);
+        setTimeout(function () { s.remove(); }, 750);
+      })();
+    }
+  }
+  function starShower() {                    // 결과 화면에서 별이 쏟아짐
+    var fx = $('fx'), kinds = ['', ' pink', ' white'];
+    for (var i = 0; i < 36; i++) {
+      (function (i) {
+        var s = document.createElement('span');
+        s.className = 'fall' + kinds[i % 3];
+        s.textContent = MARKS[i % MARKS.length];
+        s.style.left = rnd(0, 100) + '%'; s.style.fontSize = rnd(14, 30) + 'px';
+        s.style.animationDuration = rnd(1.8, 3.2) + 's'; s.style.animationDelay = rnd(0, 1.2) + 's';
+        fx.appendChild(s);
+        setTimeout(function () { s.remove(); }, 4600);
+      })(i);
+    }
+  }
+  function replay(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 
   function show(id) {
     ['home', 'game', 'result'].forEach(function (s) { $(s).classList.toggle('on', s === id); });
@@ -290,49 +404,53 @@
         savePlayer(); renderHome();
         begin();
       })
-      .withFailureHandler(function () { btn.disabled = false; $('homeMsg').textContent = '연결이 불안정해요. 다시 시도해주세요.'; })
+      .withFailureHandler(function (err) {
+        btn.disabled = false;
+        $('homeMsg').textContent = '연결이 불안정해요. 다시 시도해주세요. (' + (err && err.message ? err.message : '연결 오류') + ')';
+      })
       .registerPlayer(nick, $('oldCode').value);
+  }
+
+  /* 서버에 "게임 시작"을 알림. 게임은 응답을 기다리지 않고 바로 시작하고, 응답은 저장할 때만 필요 */
+  function requestToken(gameNo, tries) {
+    st.tokenState = 'pending';
+    server()
+      .withSuccessHandler(function (token) {
+        if (gameNo !== st.gameNo) return;
+        st.token = token; st.tokenAt = Date.now(); st.tokenState = 'ok';
+      })
+      .withFailureHandler(function (err) {
+        if (gameNo !== st.gameNo) return;
+        st.tokenErr = err && err.message ? err.message : '연결 오류';
+        if (tries > 1) setTimeout(function () { requestToken(gameNo, tries - 1); }, 1500);
+        else st.tokenState = 'fail';
+      })
+      .startGame();
   }
 
   /* 버튼을 누른 순간 입력칸에 커서를 줘야 휴대폰 키보드가 올라옵니다 */
   function begin() {
-    st.score = 0; st.attempts = 0; st.word = ''; st.token = null; st.counted = false; st.failed = false; st.playing = false;
+    st.gameNo = (st.gameNo || 0) + 1;
+    st.score = 0; st.attempts = 0; st.word = ''; st.token = null; st.tokenAt = 0; st.playing = false;
     $('score').textContent = '0'; $('time').textContent = DURATION.toFixed(1); $('barFill').style.width = '100%';
     $('word').textContent = ''; $('answer').value = '';
     show('game');
     $('answer').focus();
-
-    server()
-      .withSuccessHandler(function (token) { st.token = token; maybePlay(); })
-      .withFailureHandler(function () { st.failed = true; maybePlay(); })
-      .startGame();
+    requestToken(st.gameNo, 3);
 
     var n = 3, c = $('count');
     c.textContent = n; c.classList.add('on');
     var t = setInterval(function () {
       n--;
-      if (n > 0) { c.textContent = n; return; }
-      clearInterval(t); st.counted = true; maybePlay();
+      if (n > 0) { c.textContent = n; replay(c, 'tick'); return; }
+      clearInterval(t);
+      c.classList.remove('on');
+      st.playing = true;
+      nextWord();
+      $('answer').focus();
+      st.endAt = Date.now() + DURATION * 1000;
+      st.timer = setInterval(tick, 100);
     }, 1000);
-  }
-
-  function maybePlay() {
-    if (st.playing) return;
-    if (st.failed) {
-      if (!st.counted) return;
-      $('count').classList.remove('on');
-      $('answer').blur();
-      renderHome(); show('home');
-      $('homeMsg').textContent = '연결이 불안정해요. 다시 시도해주세요.';
-      return;
-    }
-    if (!st.counted || !st.token) return;   // 카운트다운과 서버 준비가 모두 끝나야 시작
-    $('count').classList.remove('on');
-    st.playing = true;
-    nextWord();
-    $('answer').focus();
-    st.endAt = Date.now() + DURATION * 1000;
-    st.timer = setInterval(tick, 100);
   }
 
   /* ----- 게임 진행 ----- */
@@ -356,6 +474,8 @@
     var w = st.bag.pop();
     st.word = w;
     $('word').textContent = w;
+    $('word').classList.toggle('long', w.length >= 6);
+    replay($('word'), 'pop');
     $('answer').value = '';
   }
 
@@ -368,7 +488,7 @@
     if (!typed) return;                      // 빈 칸은 제출로 치지 않음
     st.attempts++;
     var correct = typed === clean(st.word);
-    if (correct) { st.score++; $('score').textContent = st.score; }
+    if (correct) { st.score++; $('score').textContent = st.score; burst($('word'), 9); }
     var board = $('board');
     board.classList.remove('good', 'bad');
     board.classList.add(correct ? 'good' : 'bad');
@@ -393,6 +513,7 @@
     $('resGrade').textContent = grade;
     $('resCode').textContent = player.code;
     show('result');
+    starShower();
     save();
   }
 
@@ -402,17 +523,33 @@
     $('resMsg').textContent = '';
     $('saveRetryBtn').style.display = 'none';
     $('againBtn').disabled = true;
+    if (!isAuto) st.saveStart = Date.now();
     var fail = function (message, canRetry) {
       $('againBtn').disabled = false;
       $('resRank').textContent = '순위 확인 불가';
       $('resMsg').textContent = message;
       $('saveRetryBtn').style.display = canRetry ? 'block' : 'none';
     };
+    // 서버의 "게임 시작" 응답이 아직 안 왔으면 잠깐 기다림
+    if (!st.token) {
+      if (Date.now() - st.saveStart > 20000) {
+        fail('서버에 연결하지 못했어요. 다시 저장해주세요. (' + (st.tokenErr || '응답 없음') + ')', true);
+        return;
+      }
+      if (st.tokenState === 'fail') requestToken(st.gameNo, 2);
+      setTimeout(function () { save(isAuto || 'wait'); }, 500);
+      return;
+    }
+    // 응답이 늦게 왔다면, 서버가 "너무 빨리 끝난 기록"으로 오해하지 않도록 조금 기다렸다가 저장
+    var early = st.tokenAt + (DURATION - 2.5) * 1000 - Date.now();
+    if (early > 0) { setTimeout(function () { save(isAuto || 'wait'); }, early); return; }
+
     server()
       .withSuccessHandler(function (res) {
         if (!res.ok) { fail(res.message, !!res.retry); return; }
         $('againBtn').disabled = false;
         $('resRank').textContent = '🏆 현재 ' + res.rank + '위';
+        burst($('resRank'), 12);
         $('resRankSub').textContent = res.bestScore > st.score
           ? '내 최고 기록 ' + res.bestScore + '개 기준 · 전체 ' + res.total + '명'
           : '전체 ' + res.total + '명 중';
@@ -437,6 +574,7 @@
   $('submitBtn').addEventListener('mousedown', function (e) { e.preventDefault(); });
   $('submitBtn').addEventListener('touchend', function (e) { e.preventDefault(); submitAnswer(e); });
 
+  makeSky();
   loadPlayer();
   renderHome();
   if (API_URL.indexOf('https://script.google.com/') !== 0) {
