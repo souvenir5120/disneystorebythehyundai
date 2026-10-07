@@ -5,11 +5,12 @@
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>제1회 디즈니스토어 한글 받아치기 대회</title>
-<meta property="og:title" content="제1회 디즈니스토어배 한글 받아치기 대회">
+<meta property="og:title" content="제1회 디즈니스토어 한글 받아치기 대회">
 <meta property="og:description" content="30초 동안 디즈니 캐릭터 이름을 몇 개나 칠 수 있을까요?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" rel="stylesheet">
 <style>
   /* ===== 색상 (여기 값만 바꾸면 전체 톤이 바뀝니다) ===== */
   :root {
@@ -22,15 +23,15 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; }
   body {
-    font-family: 'Gowun Dodum', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
     color: var(--ink); min-height: 100vh; min-height: 100dvh;
     background: radial-gradient(120% 70% at 50% 0%, var(--navy-light) 0%, var(--navy) 55%, var(--navy-deep) 100%) fixed;
     display: flex; justify-content: center; padding: 20px 16px;
   }
   button, input { font-family: inherit; }
-/* 제목·단어·버튼·숫자는 동글동글한 '동글체', 작은 설명 글씨는 또렷한 '고운돋움' (둘 다 개인 디자이너의 무료 공개 서체) */
-  h1, .word, .big, .count, .btn, .eyebrow, .hud, .grade, .rank, .top3 h2, .top3 li b, .me b {
-    font-family: 'Dongle', 'Gowun Dodum', sans-serif; font-weight: 700; line-height: 1;
+/* 제목 · 받아칠 단어 · 큰 점수 문구만 귀여운 '동글체', 나머지는 전부 깔끔한 '프리텐다드' */
+  h1, .word, .big, .count, .dare {
+    font-family: 'Dongle', 'Pretendard', sans-serif; font-weight: 700; line-height: 1;
   }
   .wrap { width: 100%; max-width: 420px; position: relative; z-index: 1; }
   .screen { display: none; }
@@ -109,20 +110,48 @@
 
   /* 동글체는 글자가 작게 그려져서 크기를 키워 맞춤 */
   h1 { font-size: 60px; margin: 8px 0 4px; }
-  .eyebrow { font-size: 25px; padding: 6px 14px 3px; }
-  .btn { font-size: 36px; padding: 10px 16px 6px; }
-  .row .btn { padding: 4px 20px 0; }
-  .hud { font-size: 30px; }
   .word { font-size: 64px; line-height: 60px; min-height: 60px; padding-top: 6px; }
   .word.long { font-size: 50px; }
   .big { font-size: 42px; }
-  .grade { font-size: 26px; padding: 8px 18px 4px; }
-  .rank { font-size: 46px; }
-  .top3 h2 { font-size: 28px; margin-bottom: 6px; }
-  .top3 li { align-items: center; }
-  .top3 li b { font-size: 28px; }
-  .me b { font-size: 30px; }
   .count { font-size: 190px; }
+  /* 프리텐다드로 쓰는 부분 */
+  .eyebrow { font-size: 13px; font-weight: 800; padding: 6px 13px; letter-spacing: 0; }
+  .btn { font-size: 18px; font-weight: 700; padding: 16px; }
+  .row .btn { padding: 0 20px; }
+  .hud { font-size: 18px; font-weight: 700; }
+  .grade { font-size: 15px; font-weight: 700; }
+  .rank { font-size: 22px; font-weight: 800; }
+  .top3 h2 { font-size: 15px; font-weight: 800; }
+  .top3 li b { font-weight: 800; }
+
+  /* 도전장 · 응모 · 공유 */
+  .gift { display: inline-block; margin: 0 0 14px; padding: 6px 14px; border-radius: 999px; background: #f3f1ff; color: var(--navy); font-size: 13px; font-weight: 700; }
+  .ticket .eyebrow { font-size: 12px; }
+  .ticket .big { font-size: 50px; margin: 14px 0 2px; }
+  .dare { font-size: 34px; color: var(--navy-light); }
+  .quip { font-size: 15px; color: var(--ink); margin-top: 2px; }
+  .statline { margin-top: 12px; font-size: 15px; color: var(--sub); }
+  .statline .rank { font-size: 16px; color: var(--ink); margin: 0; }
+  .insta { font-weight: 800; font-size: 24px; line-height: 1.2;
+           margin-top: 14px; padding-top: 14px; border-top: 2px dashed var(--line); color: var(--navy); }
+  a.btn { display: block; text-decoration: none; }
+  .btn.cta { background: linear-gradient(135deg, #ffe08a, var(--gold)); color: var(--navy); font-size: 19px; font-weight: 800; padding: 20px 8px; margin-top: 0; white-space: nowrap;
+             box-shadow: 0 6px 18px rgba(255, 190, 60, .45); }
+  .btn.ghost { background: #fff; color: var(--navy); border: 2px solid var(--navy); font-size: 17px; padding: 14px 16px; }
+  .tip { font-size: 13px; line-height: 1.6; color: var(--sub); margin: 8px 0 16px; }
+  .tip b { color: var(--ink); }
+  .codeline { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.7; color: var(--sub); }
+  .codeline .code { font-size: 15px; color: var(--ink); }
+  #imgModal { position: fixed; inset: 0; z-index: 30; background: rgba(14, 10, 43, .96); display: none;
+              flex-direction: column; align-items: center; justify-content: center; padding: 16px; gap: 12px; }
+  #imgModal.on { display: flex; }
+  #imgModal p { color: #fff; margin: 0; font-size: 16px; }
+  #imgModal img { max-width: 100%; max-height: 68vh; border-radius: 18px; box-shadow: 0 0 30px rgba(132, 120, 255, .5); -webkit-touch-callout: default; }
+  #imgModal .btn { width: auto; padding: 12px 36px; margin: 0; }
+  #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 40; background: #fff; color: var(--navy);
+           padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; box-shadow: 0 6px 20px rgba(0,0,0,.35);
+           opacity: 0; pointer-events: none; transition: opacity .2s; white-space: nowrap; }
+  #toast.on { opacity: 1; }
 
   /* ===== 반짝이 효과 ===== */
   #sky, #fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
@@ -160,6 +189,7 @@
       <div class="eyebrow">제1회 디즈니스토어배</div>
       <h1>한글 받아치기 대회</h1>
       <p class="lead">화면에 뜨는 캐릭터 이름을 그대로 받아치세요.<br>30초 동안 몇 개나 칠 수 있을까요?</p>
+      <p class="gift">🎁 참여만 해도 추첨으로 선물을 드려요</p>
 
       <div id="newPlayer">
         <input type="text" id="nick" maxlength="10" placeholder="닉네임 (최대 10자)" autocomplete="off">
@@ -198,20 +228,29 @@
 
   <!-- ③ 결과 화면 -->
   <section id="result" class="screen">
-    <div class="card">
+    <!-- 도전장 카드 (이 내용이 그대로 이미지로 저장됩니다) -->
+    <div class="card ticket">
+      <div class="eyebrow">제1회 디즈니스토어 한글 받아치기 대회</div>
       <div class="big" id="resScore"></div>
-      <div class="acc" id="resAcc"></div>
+      <div class="dare">나 이길 디즈니 덕후 구함 👀</div>
       <div class="grade" id="resGrade"></div>
-      <div class="rank" id="resRank">순위 계산 중…</div>
+      <div class="quip" id="resQuip"></div>
+      <div class="statline"><span id="resAcc"></span> · <span class="rank" id="resRank">순위 계산 중…</span></div>
       <div class="ranksub" id="resRankSub"></div>
-      <div class="codebox">
-        참여코드: <span class="code" id="resCode"></span>
-        <small>당첨 확인을 위해 참여코드를 기억해주세요.</small>
-      </div>
-      <p class="prize">이벤트 종료 후 최종 1~3위에게<br>디즈니스토어의 선물을 드립니다 🎁</p>
-      <button class="btn" id="saveRetryBtn" style="display:none;background:#1b2340">기록 다시 저장하기</button>
-      <button class="btn shine" id="againBtn">다시 도전하기</button>
+    </div>
+
+    <div class="card">
+      <a class="btn cta shine" id="applyBtn" target="_blank" rel="noopener">🎁 팔로우하고 선물 응모하기</a>
+      <p class="tip" id="applyTip"><b>팔로우 & 최애 캐릭터 댓글</b>만 달면 경품 응모 완료!<br>점수와 상관없이 추첨으로 선물을 드려요.</p>
+
+      <button class="btn" id="imgBtn">📸 결과 이미지 저장하기</button>
+      <p class="tip">스토리에 <b class="instaId"></b> 태그하고 친구에게 도전장을 보내보세요!</p>
+
+      <button class="btn ghost" id="shareBtn">🔗 친구에게 도전장 보내기</button>
+      <button class="btn ghost" id="againBtn">다시 도전하기</button>
+      <button class="btn" id="saveRetryBtn" style="display:none">기록 다시 저장하기</button>
       <div class="msg" id="resMsg"></div>
+      <div class="codeline">내 참여코드 <span class="code" id="resCode"></span><br>다른 기기에서 같은 닉네임으로 이어 할 때 필요해요</div>
     </div>
     <div class="card top3">
       <h2>실시간 TOP 3</h2>
@@ -223,10 +262,25 @@
 <div class="count" id="count"><span id="countNum">3</span></div>
 <div id="fx"></div>
 
+<!-- 이미지 저장 안내 창 -->
+<div id="imgModal">
+  <p>이미지를 <b>길게 눌러</b> 저장하세요</p>
+  <img id="imgOut" alt="내 도전장">
+  <button class="btn ghost" id="imgClose">닫기</button>
+</div>
+<div id="toast"></div>
+
 <script>
   /* ▼▼▼ 여기 한 곳만 고치면 됩니다 ▼▼▼
      Apps Script 배포 후 받은 웹 앱 URL(끝이 /exec)을 작은따옴표 안에 붙여넣으세요. */
   var API_URL = 'https://script.google.com/macros/s/AKfycbwPbO7A34223I53LHJtbJXPqgxJkfvgFz8GE95xbbqGhWANEI3UkW4Fva3IDFMG6ZPI/exec';
+  /* ▲▲▲ 여기까지 ▲▲▲ */
+
+  /* ▼▼▼ 인스타그램 설정 ▼▼▼
+     INSTA_ID  : 도전장과 안내 문구에 크게 표시되는 공식 계정 아이디 (@ 포함)
+     INSTA_URL : [팔로우하고 선물 응모하기] 버튼이 여는 주소. 이벤트 게시물이 올라가면 그 게시물 주소로 바꾸세요. */
+  var INSTA_ID = '@disneystorebythehyundai';
+  var INSTA_URL = 'https://www.instagram.com/disneystorebythehyundai/';
   /* ▲▲▲ 여기까지 ▲▲▲ */
 
   /* ===== 게임 설정 (원하면 바꿀 수 있는 부분) ===== */
@@ -252,11 +306,13 @@
     '아이언맨', '스파이더맨', '토르', '헐크', '로키', '그루트', '로켓', '타노스', '블랙팬서', '닥터스트레인지', '캡틴아메리카', '블랙위도우', '호크아이', '앤트맨', '데드풀', '완다', '비전', '스타로드', '가모라', '울버린'
   ];
 
-  var GRADES = [       // 결과 등급 (점수 이상이면 해당 등급)
-    { min: 16, label: '✨ 전설의 디즈니 타자왕' },
-    { min: 11, label: '🏰 디즈니 찐팬' },
-    { min: 6,  label: '🎀 디즈니 입문자' },
-    { min: 0,  label: '🌱 새싹 손가락' }
+  var GRADES = [       // 결과 등급과 한 줄 평 (점수 이상이면 해당 등급)
+    { min: 21, label: '👑 전설의 타자왕',      quip: '키보드에서 연기 나는 중. 사람 맞나요?' },
+    { min: 16, label: '✨ 요정 가루 뿌린 손',   quip: '팅커벨이 손가락에 뭐 뿌리고 갔나 봐요' },
+    { min: 11, label: '🏰 디즈니 찐팬',        quip: '이름만 봐도 손이 먼저 나가는 수준' },
+    { min: 6,  label: '🎀 디즈니 입문자',      quip: '슬슬 감 잡았어요. 다음 판이 진짜!' },
+    { min: 3,  label: '🐢 느긋한 거북이',      quip: '천천히 가도 괜찮아요. 하쿠나 마타타' },
+    { min: 0,  label: '🌱 새싹 손가락',        quip: '키보드랑 아직 어색한 사이' }
   ];
   /* ========================================== */
 
@@ -508,12 +564,14 @@
     $('answer').blur();
 
     var acc = st.attempts ? Math.round(st.score / st.attempts * 100) : 0;
-    var grade = GRADES[GRADES.length - 1].label;
-    for (var i = 0; i < GRADES.length; i++) { if (st.score >= GRADES[i].min) { grade = GRADES[i].label; break; } }
+    var grade = GRADES[GRADES.length - 1];
+    for (var i = 0; i < GRADES.length; i++) { if (st.score >= GRADES[i].min) { grade = GRADES[i]; break; } }
+    st.result = { score: st.score, acc: acc, label: grade.label, quip: grade.quip, rank: 0 };
 
-    $('resScore').textContent = DURATION + '초 동안 ' + st.score + '개 성공!';
+    $('resScore').textContent = '디즈니 이름 ' + DURATION + '초에 ' + st.score + '개 침';
     $('resAcc').textContent = '정확도 ' + acc + '%';
-    $('resGrade').textContent = grade;
+    $('resGrade').textContent = grade.label;
+    $('resQuip').textContent = grade.quip;
     $('resCode').textContent = player.code;
     show('result');
     starShower();
@@ -552,6 +610,7 @@
         if (!res.ok) { fail(res.message, !!res.retry); return; }
         $('againBtn').disabled = false;
         $('resRank').textContent = '🏆 현재 ' + res.rank + '위';
+        if (st.result) st.result.rank = res.rank;
         burst($('resRank'), 12);
         $('resRankSub').textContent = res.bestScore > st.score
           ? '내 최고 기록 ' + res.bestScore + '개 기준 · 전체 ' + res.total + '명'
@@ -565,7 +624,112 @@
       .saveResult({ nickname: player.nickname, code: player.code, score: st.score, attempts: st.attempts, token: st.token });
   }
 
+  /* ----- 도전장 이미지 · 공유 · 응모 ----- */
+  var GAME_URL = location.origin + location.pathname;
+  var instaReady = INSTA_ID.indexOf('여기에') < 0;
+
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('on');
+    clearTimeout(toast.timer); toast.timer = setTimeout(function () { t.classList.remove('on'); }, 2200);
+  }
+
+  /* 인스타 스토리 크기(1080x1920)의 도전장 이미지를 그림 */
+  function drawCard() {
+    var r = st.result, W = 1080, H = 1920, c = document.createElement('canvas'), x = c.getContext('2d');
+    c.width = W; c.height = H;
+    var D = "'Dongle', 'Pretendard', sans-serif", B = "'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
+    var g = x.createRadialGradient(W / 2, 0, 0, W / 2, 0, H);
+    g.addColorStop(0, '#2b2277'); g.addColorStop(.55, '#17123f'); g.addColorStop(1, '#0e0a2b');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    for (var i = 0; i < 70; i++) {            // 별
+      x.globalAlpha = rnd(.25, .95); x.fillStyle = i % 3 === 0 ? '#ffd66b' : (i % 7 === 0 ? '#ff7fae' : '#ffffff');
+      x.font = rnd(18, 54) + 'px sans-serif'; x.fillText(MARKS[i % MARKS.length], rnd(30, W - 30), rnd(30, H - 30));
+    }
+    x.globalAlpha = 1;
+    function pill(text, y, font, padX, h, bg, fg) {
+      x.font = font; var w = x.measureText(text).width + padX * 2, l = (W - w) / 2;
+      x.fillStyle = bg; x.beginPath();
+      x.moveTo(l + h / 2, y - h / 2); x.arcTo(l + w, y - h / 2, l + w, y + h / 2, h / 2); x.arcTo(l + w, y + h / 2, l, y + h / 2, h / 2);
+      x.arcTo(l, y + h / 2, l, y - h / 2, h / 2); x.arcTo(l, y - h / 2, l + w, y - h / 2, h / 2); x.fill();
+      x.fillStyle = fg; x.fillText(text, W / 2, y + 2);
+    }
+    function fit(text, y, size, family, color, max) {      // 폭에 맞춰 글자 크기를 줄여 그림
+      do { x.font = (family === D ? '700 ' : (size >= 60 ? '800 ' : '500 ')) + size + 'px ' + family; size -= 4; } while (x.measureText(text).width > (max || W - 140) && size > 30);
+      x.fillStyle = color; x.fillText(text, W / 2, y);
+    }
+    // 결과 화면의 도전장 카드와 같은 구성: 흰 카드 하나에 전부 담음
+    var cx = 80, cw = W - 160, ch = 980, cy = (H - ch) / 2, rr = 80;
+    x.shadowColor = 'rgba(132, 120, 255, .55)'; x.shadowBlur = 90;
+    x.fillStyle = '#ffffff'; x.beginPath();
+    x.moveTo(cx + rr, cy); x.arcTo(cx + cw, cy, cx + cw, cy + ch, rr); x.arcTo(cx + cw, cy + ch, cx, cy + ch, rr);
+    x.arcTo(cx, cy + ch, cx, cy, rr); x.arcTo(cx, cy, cx + cw, cy, rr); x.fill();
+    x.shadowBlur = 0;
+    pill('제1회 디즈니스토어 한글 받아치기 대회', cy + 120, "800 40px " + B, 40, 88, '#ffd66b', '#17123f');
+    fit('디즈니 이름 ' + DURATION + '초에', cy + 290, 120, D, '#6c6a8a', cw - 120);
+    fit(r.score + '개 침', cy + 470, 300, D, '#17123f', cw - 120);
+    fit('나 이길 디즈니 덕후 구함 👀', cy + 650, 100, D, '#2b2277', cw - 120);
+    pill(r.label, cy + 780, "800 46px " + B, 44, 98, '#ffd66b', '#17123f');
+    fit(r.quip, cy + 870, 44, B, '#17123f', cw - 120);
+    fit('정확도 ' + r.acc + '%' + (r.rank ? '  ·  현재 ' + r.rank + '위' : ''), cy + 930, 36, B, '#6c6a8a', cw - 120);
+    return c;
+  }
+
+  function saveImage() {
+    if (!st.result) return;
+    var btn = $('imgBtn'); btn.disabled = true;
+    var ready = (document.fonts && document.fonts.load)
+      ? (function () {      // 이미지에 들어갈 글자를 미리 불러옴
+          var t = '제1회 디즈니스토어 한글 받아치기 대회 이름 초에 개 침 정확도 현재 위 나 이길 덕후 구함 프로필 링크에서 도전 0123456789%·!' + st.result.label + st.result.quip + INSTA_ID;
+          return Promise.all([document.fonts.load('700 100px Dongle', t), document.fonts.load('500 40px Pretendard', t), document.fonts.load('800 60px Pretendard', t)]).catch(function () {});
+        })()
+      : Promise.resolve();
+    ready.then(function () {
+      var canvas = drawCard();
+      var showModal = function () { $('imgOut').src = canvas.toDataURL('image/png'); $('imgModal').classList.add('on'); };
+      canvas.toBlob(function (blob) {
+        btn.disabled = false;
+        var file = (blob && window.File) ? new File([blob], 'disneystore-challenge.png', { type: 'image/png' }) : null;
+        // 휴대폰: 공유 창(이미지 저장 · 인스타 스토리)을 띄움. 안 되는 브라우저는 길게 눌러 저장하는 창으로
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({ files: [file] }).catch(function (err) { if (!err || err.name !== 'AbortError') showModal(); });
+        } else {
+          showModal();
+        }
+      }, 'image/png');
+    });
+  }
+
+  function shareLink() {
+    var text = '디즈니 이름 ' + DURATION + '초에 ' + (st.result ? st.result.score : 0) + '개 침. 나 이길 디즈니 덕후 구함 👀';
+    if (navigator.share) {
+      navigator.share({ title: '제1회 디즈니스토어 한글 받아치기 대회', text: text, url: GAME_URL }).catch(function () {});
+      return;
+    }
+    var full = text + '\n' + GAME_URL;
+    var done = function () { toast('링크를 복사했어요. 친구에게 붙여넣어 보내세요!'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(full).then(done).catch(function () { window.prompt('아래 링크를 복사하세요', GAME_URL); });
+    } else {
+      window.prompt('아래 링크를 복사하세요', GAME_URL);
+    }
+  }
+
+  // 공식 계정 아이디가 설정되지 않았으면 관련 문구와 응모 버튼을 숨김
+  (function () {
+    var els = document.querySelectorAll('.instaId');
+    for (var i = 0; i < els.length; i++) els[i].textContent = instaReady ? INSTA_ID : '';
+    if (instaReady) { $('applyBtn').href = INSTA_URL; }
+    else {
+      $('applyBtn').style.display = 'none'; $('applyTip').style.display = 'none';
+      els[els.length - 1].parentNode.style.display = 'none';
+    }
+  })();
+
   /* ----- 버튼 연결 ----- */
+  $('imgBtn').addEventListener('click', saveImage);
+  $('shareBtn').addEventListener('click', shareLink);
+  $('imgClose').addEventListener('click', function () { $('imgModal').classList.remove('on'); });
   $('startBtn').addEventListener('click', onStartClick);
   $('againBtn').addEventListener('click', begin);
   $('saveRetryBtn').addEventListener('click', function () { save(); });
