@@ -35,6 +35,7 @@
   .wrap { width: 100%; max-width: 420px; position: relative; z-index: 1; }
   .screen { display: none; }
   .screen.on { display: block; animation: rise .35s ease-out; }
+  #game.on { animation: none; }
   .card { background: var(--card); border-radius: 28px; padding: 24px 18px; margin-bottom: 14px; text-align: center;
           box-shadow: 0 0 36px rgba(132, 120, 255, .28); }
   .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--navy); background: var(--gold);
@@ -92,7 +93,8 @@
            display: none; align-items: flex-start; justify-content: center; padding-top: 18vh; z-index: 9;
            text-shadow: 0 0 30px rgba(255, 214, 107, .7); }
   .count.on { display: flex; }
-  .count.tick { animation: pop .35s ease-out; }
+  .count span { display: inline-block; }
+  .count span.tick { animation: pop .35s ease-out; }   /* 숫자만 튀어오름 (배경은 고정) */
 
   /* 결과 화면 */
   .big { font-size: 25px; font-weight: 700; margin: 4px 0 8px; }
@@ -111,8 +113,8 @@
   .btn { font-size: 36px; padding: 10px 16px 6px; }
   .row .btn { padding: 4px 20px 0; }
   .hud { font-size: 30px; }
-  .word { font-size: 76px; line-height: 62px; min-height: 62px; padding-top: 6px; }
-  .word.long { font-size: 56px; }
+  .word { font-size: 64px; line-height: 60px; min-height: 60px; padding-top: 6px; }
+  .word.long { font-size: 50px; }
   .big { font-size: 42px; }
   .grade { font-size: 26px; padding: 8px 18px 4px; }
   .rank { font-size: 46px; }
@@ -143,7 +145,7 @@
   @keyframes sweep { 0% { left: -60%; } 55%, 100% { left: 130%; } }
   @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
   @media (prefers-reduced-motion: reduce) {
-    .star, .btn.shine::after, .screen.on, .word.pop, .count.tick, .board.bad { animation: none; }
+    .star, .btn.shine::after, .screen.on, .word.pop, .count span.tick, .board.bad { animation: none; }
     .star { opacity: .5; }
   }
 </style>
@@ -218,13 +220,13 @@
   </section>
 </div>
 
-<div class="count" id="count">3</div>
+<div class="count" id="count"><span id="countNum">3</span></div>
 <div id="fx"></div>
 
 <script>
   /* ▼▼▼ 여기 한 곳만 고치면 됩니다 ▼▼▼
      Apps Script 배포 후 받은 웹 앱 URL(끝이 /exec)을 작은따옴표 안에 붙여넣으세요. */
-  var API_URL = 'https://script.google.com/macros/s/AKfycbwPbO7A34223I53LHJtbJXPqgxJkfvgFz8GE95xbbqGhWANEI3UkW4Fva3IDFMG6ZPI/exec';
+  var API_URL = '여기에_웹앱_URL_붙여넣기';
   /* ▲▲▲ 여기까지 ▲▲▲ */
 
   /* ===== 게임 설정 (원하면 바꿀 수 있는 부분) ===== */
@@ -438,11 +440,11 @@
     $('answer').focus();
     requestToken(st.gameNo, 3);
 
-    var n = 3, c = $('count');
-    c.textContent = n; c.classList.add('on');
+    var n = 3, c = $('count'), num = $('countNum');
+    num.textContent = n; c.classList.add('on'); replay(num, 'tick');
     var t = setInterval(function () {
       n--;
-      if (n > 0) { c.textContent = n; replay(c, 'tick'); return; }
+      if (n > 0) { num.textContent = n; replay(num, 'tick'); return; }
       clearInterval(t);
       c.classList.remove('on');
       st.playing = true;
