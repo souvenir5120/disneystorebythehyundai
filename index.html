@@ -162,6 +162,19 @@
   .shopgrid a { flex: 0 0 44%; scroll-snap-align: start; display: block; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff; }
   .shopgrid img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #f6f5fb; }
   .swipe { font-size: 12px; color: var(--sub); margin-top: 6px; }
+  /* PC용 좌우 버튼 (마우스가 있는 기기에서만 보임) */
+  .shopwrap { position: relative; }
+  .shopnav { display: none; position: absolute; top: calc(50% - 4px); transform: translateY(-50%); z-index: 2;
+             width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(23, 18, 63, .85); color: #fff;
+             font-size: 26px; line-height: 36px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+  .shopnav.prev { left: -6px; }
+  .shopnav.next { right: -6px; }
+  .shopgrid.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .shopgrid.dragging a { pointer-events: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .shopnav { display: block; }
+    .shopgrid { cursor: grab; }
+  }
 
   /* ===== 반짝이 효과 ===== */
   #sky, #fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
@@ -267,7 +280,11 @@
     <div class="card shop">
       <h2>🛍️ 디즈니스토어에서 만나요</h2>
       <a class="btn shine" id="mallBtn" target="_blank" rel="noopener">더현대Hi 디즈니스토어 바로가기</a>
-      <div class="shopgrid" id="shopGrid"></div>
+      <div class="shopwrap">
+        <button type="button" class="shopnav prev" id="shopPrev" aria-label="이전 상품">‹</button>
+        <div class="shopgrid" id="shopGrid"></div>
+        <button type="button" class="shopnav next" id="shopNext" aria-label="다음 상품">›</button>
+      </div>
       <div class="swipe">← 옆으로 넘겨보세요 →</div>
     </div>
 
@@ -709,6 +726,33 @@
     });
     grid.scrollLeft = 0;
   }
+
+  /* PC에서도 넘길 수 있게: 좌우 버튼 · 마우스 휠 · 마우스로 끌기 */
+  (function () {
+    var g = $('shopGrid');
+    function step() { var a = g.querySelector('a'); return a ? a.offsetWidth + 10 : 200; }
+    $('shopPrev').addEventListener('click', function () { g.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    $('shopNext').addEventListener('click', function () { g.scrollBy({ left: step(), behavior: 'smooth' }); });
+    g.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && g.scrollWidth > g.clientWidth) {
+        var max = g.scrollWidth - g.clientWidth;
+        if ((e.deltaY < 0 && g.scrollLeft > 0) || (e.deltaY > 0 && g.scrollLeft < max)) { e.preventDefault(); g.scrollLeft += e.deltaY; }
+      }
+    }, { passive: false });
+    var down = false, moved = false, sx = 0, sl = 0;
+    g.addEventListener('mousedown', function (e) { down = true; moved = false; sx = e.pageX; sl = g.scrollLeft; e.preventDefault(); });
+    window.addEventListener('mousemove', function (e) {
+      if (!down) return;
+      var dx = e.pageX - sx;
+      if (Math.abs(dx) > 5) { moved = true; g.classList.add('dragging'); }
+      g.scrollLeft = sl - dx;
+    });
+    window.addEventListener('mouseup', function () {
+      if (!down) return; down = false;
+      setTimeout(function () { g.classList.remove('dragging'); }, 0);
+    });
+    g.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
+  })();
 
   /* ----- 버튼 연결 ----- */
   $('shareBtn').addEventListener('click', shareLink);
