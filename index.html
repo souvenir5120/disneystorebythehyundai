@@ -30,7 +30,7 @@
   }
   button, input { font-family: inherit; }
 /* 제목 · 받아칠 단어 · 큰 점수 문구만 귀여운 '동글체', 나머지는 전부 깔끔한 '프리텐다드' */
-  h1, .word, .count, .ticket .rank {
+  h1, .word, .count, .mainscore {
     font-family: 'Dongle', 'Pretendard', sans-serif; font-weight: 700; line-height: 1;
   }
   .wrap { width: 100%; max-width: 420px; position: relative; z-index: 1; }
@@ -127,11 +127,13 @@
   /* 결과 · 이벤트 안내 · 공유 */
   .gift { display: inline-block; margin: 0 0 14px; padding: 6px 14px; border-radius: 999px; background: #f3f1ff; color: var(--navy); font-size: 13px; font-weight: 700; }
   .ticket .eyebrow { font-size: 12px; }
-  .ticket .rank { font-size: 84px; margin: 22px 0 2px; color: var(--navy); }   /* 순위가 메인 */
-  .ticket .ranksub { margin-bottom: 12px; }
+  .mainscore { font-size: min(64px, 15vw); margin: 22px 0 6px; color: var(--navy); white-space: nowrap; }   /* "30초에 N개 입력!"이 메인 */
+  .ticket .rank { font-size: 24px; font-weight: 800; color: var(--navy-light); margin: 4px 0 2px; }
+  .ticket .ranksub { margin-bottom: 4px; }
   .subscore { font-size: 18px; font-weight: 700; color: var(--ink); }          /* n초에 n개 침은 보조 */
   .ticket .grade { margin: 12px 0 8px; }
   .brandlogo { display: block; width: 132px; height: auto; margin: 6px auto 18px; }
+  .evemoji { font-size: 26px; letter-spacing: 2px; margin-bottom: 6px; }
   .event h2 { font-size: 20px; font-weight: 800; line-height: 1.4; color: var(--navy); margin: 0 0 16px; word-break: keep-all; }
   .howto { margin: 16px 0 0; padding: 14px 14px 12px; border-radius: 16px; background: #f6f5fb; text-align: left; font-size: 13px; line-height: 1.6; color: var(--ink); }
   .howto > b { display: block; font-size: 14px; margin-bottom: 4px; color: var(--navy); }
@@ -267,9 +269,9 @@
     <!-- 게임 결과 -->
     <div class="card ticket">
       <div class="eyebrow">제1회 디즈니스토어 한글 받아치기 대회</div>
+      <div class="mainscore" id="resScore"></div>
       <div class="rank" id="resRank">순위 계산 중…</div>
       <div class="ranksub" id="resRankSub"></div>
-      <div class="subscore" id="resScore"></div>
       <div class="grade" id="resGrade"></div>
       <div class="quip" id="resQuip"></div>
       <div class="statline" id="resAcc"></div>
@@ -280,6 +282,7 @@
 
     <!-- 이벤트 안내 (게임 점수와 무관, 창의적인 댓글 선정) -->
     <div class="card event">
+      <div class="evemoji">🐭 🎀 💙 ✨</div>
       <h2>나의 최애 캐릭터 댓글 달고<br>한복 입은 미키/미니 인형 받자!</h2>
       <a class="btn cta shine" id="applyBtn" target="_blank" rel="noopener">인스타그램 이벤트 참여하기</a>
       <div class="howto" id="applyTip">
@@ -288,6 +291,7 @@
           <li>아래 코드 복붙 후</li>
           <li>한글날 이벤트 게시물 댓글에 “복붙한 코드 + 최애 캐릭터” 남기기</li>
           <li>가장 창의적인 댓글을 작성한 분들께 경품 증정</li>
+          <li>디즈니스토어 인스타그램 팔로우까지 하면 끝!</li>
         </ol>
         <div class="cmt"><span id="cmtText"></span><button type="button" id="cmtCopy">복사</button></div>
         <dl>
@@ -641,7 +645,7 @@
     for (var i = 0; i < GRADES.length; i++) { if (st.score >= GRADES[i].min) { grade = GRADES[i]; break; } }
     st.result = { score: st.score, acc: acc, label: grade.label, quip: grade.quip, rank: 0 };
 
-    $('resScore').textContent = DURATION + '초에 ' + st.score + '개 침';
+    $('resScore').textContent = DURATION + '초에 ' + st.score + '개 입력!';
     $('resAcc').textContent = '정확도 ' + acc + '%';
     $('resGrade').textContent = grade.label;
     $('resQuip').textContent = grade.quip;
