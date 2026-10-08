@@ -146,6 +146,17 @@
            opacity: 0; pointer-events: none; transition: opacity .2s; white-space: nowrap; }
   #toast.on { opacity: 1; }
 
+  /* 상품 */
+  .shop h2 { font-size: 17px; font-weight: 800; margin: 0 0 12px; color: var(--navy); }
+  .shop .btn { margin-top: 0; }
+  /* 가로로 넘겨보는 상품 슬라이드 */
+  .shopgrid { display: flex; gap: 10px; margin: 14px -18px 0; padding: 0 18px 6px; overflow-x: auto;
+              scroll-snap-type: x mandatory; scroll-padding: 0 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .shopgrid::-webkit-scrollbar { display: none; }
+  .shopgrid a { flex: 0 0 44%; scroll-snap-align: start; display: block; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff; }
+  .shopgrid img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #f6f5fb; }
+  .swipe { font-size: 12px; color: var(--sub); margin-top: 6px; }
+
   /* ===== 반짝이 효과 ===== */
   #sky, #fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
   #sky { z-index: 0; }
@@ -233,7 +244,7 @@
     </div>
 
     <div class="card">
-      <a class="btn cta shine" id="applyBtn" target="_blank" rel="noopener">🎁 선물 응모하러 가기</a>
+      <a class="btn cta shine" id="applyBtn" target="_blank" rel="noopener">🎁 팔로우하고 선물 응모하기</a>
       <p class="tip" id="applyTip"><b>팔로우 & 최애 캐릭터 댓글</b>만 달면 경품 응모 완료!<br>점수와 상관없이 추첨으로 선물을 드려요.</p>
 
       <button class="btn ghost" id="shareBtn">🔗 친구에게 도전장 보내기</button>
@@ -242,6 +253,14 @@
       <div class="msg" id="resMsg"></div>
       <div class="codeline">내 참여코드 <span class="code" id="resCode"></span><br>다른 기기에서 같은 닉네임으로 이어 할 때 필요해요</div>
     </div>
+    <!-- 디즈니스토어 상품 -->
+    <div class="card shop">
+      <h2>🛍️ 디즈니스토어에서 만나요</h2>
+      <a class="btn shine" id="mallBtn" target="_blank" rel="noopener">더현대Hi 디즈니스토어 바로가기</a>
+      <div class="shopgrid" id="shopGrid"></div>
+      <div class="swipe">← 옆으로 넘겨보세요 →</div>
+    </div>
+
     <div class="card top3">
       <h2>실시간 TOP 3</h2>
       <ol class="top3list"><li class="empty">불러오는 중…</li></ol>
@@ -263,6 +282,22 @@
   /* ▼▼▼ 인스타그램 설정 ▼▼▼
      [팔로우하고 선물 응모하기] 버튼이 여는 주소. 지금은 공식 계정, 이벤트 게시물이 올라가면 그 게시물 주소로 바꾸세요. */
   var INSTA_URL = 'https://www.instagram.com/disneystorebythehyundai/';
+  /* ▲▲▲ 여기까지 ▲▲▲ */
+
+  /* ▼▼▼ 디즈니스토어 상품 ▼▼▼
+     MALL_URL : [더현대Hi 디즈니스토어 바로가기] 버튼 주소
+     PRODUCTS : 결과 화면에 가로 슬라이드로 보여줄 상품 (순서는 매번 랜덤). img는 GitHub에 올린 사진 파일 이름,
+                url은 그 상품의 더현대Hi 주소 (비워두면 브랜드관으로 연결) */
+  var MALL_URL = 'https://hi.thehyundai.com/brand/542422?target=brand&disPlaySize=10&targetCode=137447&page=1&flCate=400009';
+  var PRODUCTS = [
+    { name: '제주 에디션 스티치 인형',        img: 'product1.jpg', url: '' },
+    { name: '한복 미키 & 미니 컬렉션',         img: 'product2.jpg', url: '' },
+    { name: '서울시티 미키마우스 아크릴 키링', img: 'product3.jpg', url: 'https://hi.thehyundai.com/product/40B1502246' },
+    { name: '곰돌이 푸 미니 인형',             img: 'product4.jpg', url: '' },
+    { name: '루시퍼 러그',                     img: 'product5.jpg', url: '' },
+    { name: '피글렛 미니 인형',                img: 'product6.jpg', url: '' },
+    { name: '업 풍선 집 피규어',               img: 'product7.jpg', url: '' }
+  ];
   /* ▲▲▲ 여기까지 ▲▲▲ */
 
   /* ===== 게임 설정 (원하면 바꿀 수 있는 부분) ===== */
@@ -550,12 +585,13 @@
     for (var i = 0; i < GRADES.length; i++) { if (st.score >= GRADES[i].min) { grade = GRADES[i]; break; } }
     st.result = { score: st.score, acc: acc, label: grade.label, quip: grade.quip, rank: 0 };
 
-    $('resScore').textContent = DURATION + '초에 ' + st.score + '개 입력 완료';
+    $('resScore').textContent = DURATION + '초에 ' + st.score + '개 침';
     $('resAcc').textContent = '정확도 ' + acc + '%';
     $('resGrade').textContent = grade.label;
     $('resQuip').textContent = grade.quip;
     $('resCode').textContent = player.code;
     show('result');
+    renderShop();
     starShower();
     save();
   }
@@ -634,6 +670,22 @@
   // 인스타 주소가 설정되지 않았으면 응모 버튼과 안내를 숨김
   if (instaReady) { $('applyBtn').href = INSTA_URL; }
   else { $('applyBtn').style.display = 'none'; $('applyTip').style.display = 'none'; }
+
+  /* ----- 디즈니스토어 상품 (전부 보여주고 순서만 랜덤) ----- */
+  $('mallBtn').href = MALL_URL;
+  function renderShop() {
+    var list = PRODUCTS.slice();
+    for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+    var grid = $('shopGrid'); grid.innerHTML = '';
+    list.forEach(function (p) {
+      var a = document.createElement('a');
+      a.href = p.url || MALL_URL; a.target = '_blank'; a.rel = 'noopener';
+      var img = document.createElement('img'); img.src = p.img; img.alt = p.name; img.loading = 'lazy';
+      img.onerror = function () { a.style.display = 'none'; };   // 사진 파일이 없으면 그 칸은 숨김
+      a.appendChild(img); grid.appendChild(a);
+    });
+    grid.scrollLeft = 0;
+  }
 
   /* ----- 버튼 연결 ----- */
   $('shareBtn').addEventListener('click', shareLink);
