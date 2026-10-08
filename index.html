@@ -30,7 +30,7 @@
   }
   button, input { font-family: inherit; }
 /* 제목 · 받아칠 단어 · 큰 점수 문구만 귀여운 '동글체', 나머지는 전부 깔끔한 '프리텐다드' */
-  h1, .word, .count, .headline {
+  h1, .word, .count, .ticket .rank {
     font-family: 'Dongle', 'Pretendard', sans-serif; font-weight: 700; line-height: 1;
   }
   .wrap { width: 100%; max-width: 420px; position: relative; z-index: 1; }
@@ -127,25 +127,21 @@
   /* 결과 · 이벤트 안내 · 공유 */
   .gift { display: inline-block; margin: 0 0 14px; padding: 6px 14px; border-radius: 999px; background: #f3f1ff; color: var(--navy); font-size: 13px; font-weight: 700; }
   .ticket .eyebrow { font-size: 12px; }
-  .headline { font-size: 46px; margin: 16px 0 4px; color: var(--navy); word-break: keep-all; }   /* 결과 문장이 메인 */
-  .ticket .rank { font-size: 15px; font-weight: 800; color: var(--ink); margin: 0; }
-  .ticket .ranksub { margin-bottom: 4px; }
+  .ticket .rank { font-size: 84px; margin: 22px 0 2px; color: var(--navy); }   /* 순위가 메인 */
+  .ticket .ranksub { margin-bottom: 12px; }
   .subscore { font-size: 18px; font-weight: 700; color: var(--ink); }          /* n초에 n개 침은 보조 */
   .ticket .grade { margin: 12px 0 8px; }
   .brandlogo { display: block; width: 132px; height: auto; margin: 6px auto 18px; }
-  .event h2 { font-size: 20px; font-weight: 800; line-height: 1.35; color: var(--navy); margin: 0 0 8px; }
-  .evlead { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 16px; word-break: keep-all; }
+  .event h2 { font-size: 20px; font-weight: 800; line-height: 1.4; color: var(--navy); margin: 0 0 16px; word-break: keep-all; }
   .howto { margin: 16px 0 0; padding: 14px 14px 12px; border-radius: 16px; background: #f6f5fb; text-align: left; font-size: 13px; line-height: 1.6; color: var(--ink); }
   .howto > b { display: block; font-size: 14px; margin-bottom: 4px; color: var(--navy); }
   .howto ol { margin: 0 0 10px; padding-left: 20px; }
+  .howto .cmt { margin: 0 0 12px; background: #fff; border: 1px solid var(--line); }
   .howto li { margin: 2px 0; word-break: keep-all; }
   .howto dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 0; padding-top: 10px; border-top: 1px dashed var(--line); }
   .howto dt { font-weight: 800; color: var(--navy); }
   .howto dd { margin: 0; }
   .howto small { display: block; margin-top: 10px; font-size: 12px; color: var(--sub); word-break: keep-all; }
-  .optional { margin: 16px 0 12px; text-align: left; }
-  .optlabel { display: block; font-size: 12px; color: var(--sub); margin-bottom: 4px; }
-  .optional .cmt { margin-top: 0; }
   .quip { font-size: 15px; color: var(--ink); margin-top: 2px; }
   .statline { margin-top: 6px; font-size: 14px; color: var(--sub); }
   a.btn { display: block; text-decoration: none; }
@@ -230,7 +226,6 @@
       <div class="eyebrow">제1회 디즈니스토어</div>
       <h1>한글 받아치기 대회</h1>
       <p class="lead">화면에 뜨는 캐릭터 이름을 그대로 받아치세요.<br>30초 동안 몇 개나 칠 수 있을까요?</p>
-      <p class="gift">💙 10.9 – 10.13 한글날 최애 캐릭터 댓글 이벤트 진행 중</p>
 
       <div id="newPlayer">
         <input type="text" id="nick" maxlength="10" placeholder="닉네임 (최대 10자)" autocomplete="off">
@@ -272,11 +267,12 @@
     <!-- 게임 결과 -->
     <div class="card ticket">
       <div class="eyebrow">제1회 디즈니스토어 한글 받아치기 대회</div>
-      <div class="headline" id="resScore"></div>
+      <div class="rank" id="resRank">순위 계산 중…</div>
+      <div class="ranksub" id="resRankSub"></div>
+      <div class="subscore" id="resScore"></div>
       <div class="grade" id="resGrade"></div>
       <div class="quip" id="resQuip"></div>
-      <div class="statline"><span id="resAcc"></span> · <span class="rank" id="resRank">순위 계산 중…</span></div>
-      <div class="ranksub" id="resRankSub"></div>
+      <div class="statline" id="resAcc"></div>
       <button class="btn shine" id="againBtn">다시 도전하기</button>
       <button class="btn ghost" id="saveRetryBtn" style="display:none">기록 다시 저장하기</button>
       <div class="msg" id="resMsg"></div>
@@ -284,26 +280,21 @@
 
     <!-- 이벤트 안내 (게임 점수와 무관, 창의적인 댓글 선정) -->
     <div class="card event">
-      <h2>한글날을 같이 보내고 싶은<br>최애 캐릭터는? 💙</h2>
-      <p class="evlead">디즈니스토어 인스타그램에 가장 창의적인 댓글을 남겨주세요!<br>선정된 3명에게 특별한 선물을 드려요.</p>
+      <h2>나의 최애 캐릭터 댓글 달고<br>한복 입은 미키/미니 인형 받자!</h2>
       <a class="btn cta shine" id="applyBtn" target="_blank" rel="noopener">인스타그램 이벤트 참여하기</a>
       <div class="howto" id="applyTip">
         <b>이벤트 참여 방법</b>
         <ol>
-          <li>30초 동안 디즈니 캐릭터 이름 받아치기 게임 즐기기</li>
-          <li>디즈니스토어 공식 인스타그램 방문 및 팔로우</li>
-          <li>이벤트 게시물에 “내 코드 복붙 + 최애 캐릭터” 댓글 남기기</li>
-          <li>가장 창의적인 댓글을 작성한 3명에게 한복 미키·미니 플러시 경품 증정</li>
+          <li>아래 코드 복붙 후</li>
+          <li>한글날 이벤트 게시물 댓글에 “복붙한 코드 + 최애 캐릭터” 남기기</li>
+          <li>가장 창의적인 댓글을 작성한 분들께 경품 증정</li>
         </ol>
+        <div class="cmt"><span id="cmtText"></span><button type="button" id="cmtCopy">복사</button></div>
         <dl>
           <dt>이벤트 기간</dt><dd>2026년 10월 9일(금) ~ 13일(화)</dd>
           <dt>당첨자 발표</dt><dd>2026년 10월 14일(수)</dd>
         </dl>
         <small>게임 점수와 순위는 당첨과 관계없어요. 댓글의 창의성을 기준으로 선정해요.</small>
-      </div>
-      <div class="optional">
-        <span class="optlabel">댓글에 붙여넣을 내 코드 (선택)</span>
-        <div class="cmt"><span id="cmtText"></span><button type="button" id="cmtCopy">복사</button></div>
       </div>
       <button class="btn ghost" id="shareBtn">🔗 친구에게 게임 공유하기</button>
       <div class="codeline">내 참여코드 <span class="code" id="resCode"></span><br>다른 기기에서 같은 닉네임으로 이어 할 때 필요해요</div>
@@ -650,7 +641,7 @@
     for (var i = 0; i < GRADES.length; i++) { if (st.score >= GRADES[i].min) { grade = GRADES[i]; break; } }
     st.result = { score: st.score, acc: acc, label: grade.label, quip: grade.quip, rank: 0 };
 
-    $('resScore').textContent = DURATION + '초 동안 ' + st.score + '개의 디즈니 이름을 받아쳤어요! 🎉';
+    $('resScore').textContent = DURATION + '초에 ' + st.score + '개 침';
     $('resAcc').textContent = '정확도 ' + acc + '%';
     $('resGrade').textContent = grade.label;
     $('resQuip').textContent = grade.quip;
@@ -796,7 +787,7 @@
 
   /* ----- 버튼 연결 ----- */
   $('shareBtn').addEventListener('click', shareLink);
-  $('cmtCopy').addEventListener('click', function () { copyText(commentText(), '내 코드를 복사했어요!'); });
+  $('cmtCopy').addEventListener('click', function () { copyText(commentText(), '코드 복사 완료! 댓글에 붙여넣어 주세요'); });
   // 이벤트 버튼을 누르면 내 코드를 미리 복사해 둠 (편의 기능, 이벤트 필수 단계 아님)
   $('applyBtn').addEventListener('click', function () {
     try { if (navigator.clipboard) navigator.clipboard.writeText(commentText()).catch(function () {}); } catch (e) {}
