@@ -712,10 +712,9 @@
     clearTimeout(toast.timer); toast.timer = setTimeout(function () { t.classList.remove('on'); }, 2200);
   }
 
-  /* 댓글에 붙여넣을 수 있는 내 코드(닉네임 · 기록). 선택 기능 */
+  /* 댓글에 붙여넣을 문구: 본인 고유 코드(참여코드) + 최애 캐릭터 */
   function commentText() {
-    var r = st.result || { score: 0 };
-    return '닉네임 ' + (player ? player.nickname : '') + ' · ' + DURATION + '초에 ' + r.score + '개 · 최애 캐릭터: ';
+    return (player ? player.code : '') + ' + 최애 캐릭터는? ';
   }
   function copyText(t, msg) {
     var ok = function () { toast(msg); };
